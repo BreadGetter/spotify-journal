@@ -62,8 +62,15 @@ def main():
             albums = spotify.saved_albums(limit=50)
 
             for album in albums.items:
+                # if album already exists in the database, skip it (query by album name and artist)
+                album_exists = db.session.query(Album).filter_by(title=album.album.name, artist=album.album.artists[0].name).first()
+                if album_exists:
+                    print("Album already exists in the database.")
+                    continue
+                print("Adding album to the database.")
                 album_data = Album(
                     user_id= user.id,
+                    cover_url = album.album.images[0].url,
                     title=album.album.name,
                     artist=album.album.artists[0].name,
                     release_date=datetime.strptime(album.album.release_date, '%Y-%m-%d'), 
