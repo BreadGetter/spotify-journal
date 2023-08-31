@@ -18,7 +18,8 @@ class Album(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(120), nullable=False)
     artist = db.Column(db.String(120), nullable=False)
-    #release_date = db.Column(db.Date, nullable=False)
+    release_date = db.Column(db.Date, nullable=False)
+    total_tracks = db.Column(db.Integer, nullable=False)
     tracks = db.relationship('Track', backref='album', lazy=True)
     note = db.relationship('Note', backref='album', uselist=False)
     

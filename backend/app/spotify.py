@@ -66,27 +66,31 @@ def main():
                     user_id= user.id,
                     title=album.album.name,
                     artist=album.album.artists[0].name,
-                    release_date=datetime.strptime(album.album.release_date, '%Y-%m-%d')
+                    release_date=datetime.strptime(album.album.release_date, '%Y-%m-%d'), 
+                    total_tracks=album.album.total_tracks
                 )
                 db.session.add(album_data)
                 db.session.commit()
+          
 
                 for track in album.album.tracks.items:
                     track_data = Track(
                         user_id=user.id,
-                        album_id=album_data,
+                        album_id=album_data.id,
                         title=track.name,
                         duration=track.duration_ms
-                    )
+                    )                    
+                
                     db.session.add(track_data)
-                    db.session.commit()
 
             print("Albums and tracks added to the database.")
 
-        
+            db.session.commit()
+
     except tk.HTTPError as ex:
         page += '<br>Error in retrieving now playing!'
-        
+    
+    
     return page
 
 @app.route('/login', methods=['GET'])
