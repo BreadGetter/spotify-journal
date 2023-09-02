@@ -19,6 +19,7 @@ export default function App() {
             <Route path="/:user_id" element={<HomePage />} />
             <Route path="/:user_id/albums/:album_id" element={<AlbumPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/callback" element={<Callback />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
       </BrowserRouter>

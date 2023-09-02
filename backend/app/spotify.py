@@ -1,8 +1,9 @@
 import tekore as tk
-from flask import session, redirect, request
+from flask import session, redirect, request, jsonify
 from app import app, db
 from app.models import User, Album, Track, Note
 from datetime import datetime
+
 
 conf = tk.config_from_environment()
 
@@ -101,13 +102,17 @@ def main():
 
 @app.route('/login', methods=['GET'])
 def login():
+    print("attempted login")
     if 'user' in session:
-        return redirect('/', 307)
+        #return redirect('/', 307)
+        print("User already logged in")
+        return jsonify({'message': "User already logged in",'loginUrl': None})
 
     scope = tk.scope.every
     auth = tk.UserAuth(cred, scope)
     auths[auth.state] = auth
-    return redirect(auth.url, 307)
+    #return redirect(auth.url, 307)
+    return jsonify({'loginUrl': auth.url})
 
 @app.route('/callback', methods=['GET'])
 def login_callback():

@@ -9,10 +9,10 @@ export default function NoteForm( { user_id, album_id, currContent, track_id} ) 
     const content = useRef();
 
     useEffect(() => {
-        content.current.focus();
-    }, []);
-
-    console.log(album_id);
+        if (currContent !== undefined) {
+            content.current.value = currContent;
+        }
+    }, [currContent]);
 
 
     const onSubmit = async (event) => {
@@ -48,7 +48,7 @@ export default function NoteForm( { user_id, album_id, currContent, track_id} ) 
                     as="textarea" 
                     rows={3} 
                     ref={content} 
-                    placeholder={currContent}
+                    placeholder={currContent ? currContent : 'add note...'}
                     defaultValue={currContent}
                 />
             </Form.Group>

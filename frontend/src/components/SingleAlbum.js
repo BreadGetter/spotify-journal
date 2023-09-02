@@ -27,7 +27,7 @@ export default function SingleAlbum({ user_id, album_id }) {
             setNote(null);
           }
         })();
-      }, [album]);
+      }, [album, tracks, note]);
 
       
     

@@ -128,7 +128,7 @@ def add_track_note(user_id, album_id, track_id):
         db.session.add(note)
         db.session.commit()
 
-        return jsonify({'message': 'Note added successfully!', 'note_content' : note.content}, 201)
+        return jsonify({'message': 'Note added successfully!', 'note_content' : note.content, 'timestamp': note.timestamp}, 201)
 
 
     
