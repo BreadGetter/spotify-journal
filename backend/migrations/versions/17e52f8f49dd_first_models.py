@@ -1,8 +1,8 @@
 """first models
 
-Revision ID: cf280c50450f
+Revision ID: 17e52f8f49dd
 Revises: 
-Create Date: 2023-08-31 16:00:18.543854
+Create Date: 2023-09-01 22:32:59.549472
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cf280c50450f'
+revision = '17e52f8f49dd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -49,7 +49,7 @@ def upgrade():
     op.create_table('note',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('album_id', sa.Integer(), nullable=False),
+    sa.Column('album_id', sa.Integer(), nullable=True),
     sa.Column('track_id', sa.Integer(), nullable=True),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('timestamp', sa.DateTime(), nullable=False),

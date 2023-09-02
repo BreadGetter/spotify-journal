@@ -58,14 +58,15 @@ def main():
             
             
             
-
-            albums = spotify.saved_albums(limit=50)
+            # add while loop to get all albums, incrementing offset by 50 each time
+            albums = spotify.saved_albums(limit=50, offset=0)
 
             for album in albums.items:
                 # if album already exists in the database, skip it (query by album name and artist)
                 album_exists = db.session.query(Album).filter_by(title=album.album.name, artist=album.album.artists[0].name).first()
                 if album_exists:
                     continue
+                print(f"Adding album: {album.album.name}")
                 album_data = Album(
                     user_id= user.id,
                     cover_url = album.album.images[0].url,

@@ -41,7 +41,7 @@ class Track(db.Model):
 class Note(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    album_id = db.Column(db.Integer, db.ForeignKey('album.id'), nullable=False)
+    album_id = db.Column(db.Integer, db.ForeignKey('album.id'), nullable=True)
     track_id = db.Column(db.Integer, db.ForeignKey('track.id'), nullable=True)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

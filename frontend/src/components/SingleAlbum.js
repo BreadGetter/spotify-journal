@@ -3,18 +3,14 @@ import { useState, useEffect } from "react";
 import Album from "./Album";
 import Spinner from 'react-bootstrap/Spinner';
 import Track from "./Track";
+import NoteForm from "./NoteForm";
+
 
 
 export default function SingleAlbum({ user_id, album_id }) {
     const [album, setAlbum] = useState();
     const [tracks, setTracks] = useState();
-
-    // print the json response to the console
-
-    console.log("user id")
-    console.log(user_id);
-    console.log("album id");
-    console.log(album_id);
+    const [note, setNote] = useState();
 
     useEffect(() => {
     (async () => {
@@ -23,18 +19,17 @@ export default function SingleAlbum({ user_id, album_id }) {
             const results = await response.json();
             setAlbum(results);
             setTracks(results.tracks);
+            console.log(results);
+            setNote(results.note);
           }
           else {
             setTracks(null);
+            setNote(null);
           }
         })();
-      }, []);
+      }, [album]);
 
-    console.log("album data");
-    console.log(album);
-    console.log("tracks data");
-    console.log(tracks);
-
+      
     
       return (
         <>
@@ -42,9 +37,26 @@ export default function SingleAlbum({ user_id, album_id }) {
                 <Spinner animation="border" />
                 :
                 <>
-
-                    <h1>{album.title}</h1>
+                    <h1>{album.title} - {album.artist}</h1>
                     <img src={album.cover_url} width={200} height={200}/>
+                    {note === null ?
+                        <p>There are no notes for this album.</p>
+                        :
+                        <>
+                         { note === undefined ?
+                            <Spinner animation="border" />
+                            :
+                            <>
+                                <div className="album-note">
+                                    <h3>Album Note</h3>
+                                    <p>{note.content}</p>
+                                    <p>{note.timestamp}</p>
+                                </div>  
+                            </> 
+                        }
+                      </>
+                    }
+                    <NoteForm user_id={user_id} album_id={album_id} currContent={note ? note.content : ''}/>
                     {tracks === undefined ?
                         <Spinner animation="border" />
                         :
@@ -60,6 +72,7 @@ export default function SingleAlbum({ user_id, album_id }) {
                             }
                         </>
                     }
+
                 </>
             }
 
