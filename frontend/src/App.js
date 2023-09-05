@@ -4,8 +4,11 @@ import './App.css';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import AlbumPage from './pages/AlbumPage';
+import AlbumsPage from './pages/AlbumsPage';
 import Callback from './components/Callback';
 import UserProvider from './contexts/UserProvider';
+import AlbumNotesPage from './pages/AlbumNotesPage';  
+import TrackNotesPage from './pages/TrackNotesPage';
 
 
 
@@ -19,6 +22,9 @@ export default function App() {
             <Routes>
               <Route path="/home" element={<HomePage />} />
               <Route path="/albums/:album_id" element={<AlbumPage />} />
+              <Route path="/albums/notes" element={<AlbumsPage />} />
+              <Route path="/albums/:album_id/notes" element={<AlbumNotesPage />} />
+              <Route path="/albums/:album_id/tracks/:track_id/notes" element={<TrackNotesPage />} />
               <Route path="*" element={<Navigate to="/" />} />
               <Route path="/callback" element={<Callback />} />
             </Routes>

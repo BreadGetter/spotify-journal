@@ -5,6 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Track from "./Track";
 import NoteForm from "./NoteForm";
 import { useUser } from '../contexts/UserProvider';
+import { Link } from "react-router-dom";
 
 
 
@@ -55,7 +56,7 @@ export default function SingleAlbum({ album_id }) {
                     <Spinner animation="border" />
                     :
                     <>
-                        <h1>{album.title} - {album.artist}</h1>
+                        <h1>{album.title} - {album.artist} - {album.release_date}</h1>
                         <img src={album.cover_url} width={200} height={200}/>
                         {note === null ?
                             <p>There are no notes for this album.</p>
@@ -74,6 +75,7 @@ export default function SingleAlbum({ album_id }) {
                             }
                         </>
                         }
+                        <Link to={`/albums/${album_id}/notes`}> View previous notes </Link>
                         <NoteForm user_id={user.id} album_id={album_id} currContent={note ? note.content : ''}/>
                         {tracks === undefined ?
                             <Spinner animation="border" />

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Logout from './Logout';
 import Login from './Login';
 import { useUser } from '../contexts/UserProvider';
+import AlbumsPage from '../pages/AlbumsPage';
 
 export default function Header() {
     const { user } = useUser();
@@ -12,10 +13,11 @@ export default function Header() {
             <Container>
                 <Navbar.Brand>Spotify journal</Navbar.Brand>
                 { user === null ? <Login /> : (
-                    <>
+                    <>      
                         <Link to="/home">Home</Link>
                         <Logout />
-                        <h5 className="username">{user?.display_name}</h5>
+
+                        <h5 className="username"> Hi, { user?.display_name}!</h5>
                         <img src={user?.image_url} width={50} height={50}/>
                     </>
                 )}

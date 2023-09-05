@@ -49,7 +49,7 @@ export default function Albums() {
                         :
                         <>
                             {albums === null ?
-                                <p>Albums being retrieved.</p>
+                                <Spinner animation="border" />
                                 :
                                 <>
                                     {albums.length === 0 ?
