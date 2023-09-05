@@ -4,78 +4,98 @@ import Album from "./Album";
 import Spinner from 'react-bootstrap/Spinner';
 import Track from "./Track";
 import NoteForm from "./NoteForm";
+import { useUser } from '../contexts/UserProvider';
 
 
 
-export default function SingleAlbum({ user_id, album_id }) {
+export default function SingleAlbum({ album_id }) {
+    const { user } = useUser();
     const [album, setAlbum] = useState();
     const [tracks, setTracks] = useState();
     const [note, setNote] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
     (async () => {
-        const response = await fetch(`/api/albums/${user_id}/${album_id}`);
-        if (response.ok) {
-            const results = await response.json();
-            setAlbum(results);
-            setTracks(results.tracks);
-            console.log(results);
-            setNote(results.note);
-          }
-          else {
+        try {
+            const response = await fetch(`/api/albums/${user.id}/${album_id}`);
+            if (response.ok) {
+                const results = await response.json();
+                setAlbum(results);
+                setTracks(results.tracks);
+                console.log(results);
+                setNote(results.note);
+            }
+            else {
+                setTracks(null);
+                setNote(null);
+            }
+        }
+        catch (error) {
             setTracks(null);
             setNote(null);
-          }
-        })();
-      }, [album, tracks, note]);
+            console.error('Error fetching user data:', error);
+        }
+        finally {
+            setIsLoading(false);
+        }
+
+    })();
+    }, [user, album, tracks, note]);
 
       
     
       return (
         <>
-            {album === undefined ? 
-                <Spinner animation="border" />
-                :
-                <>
-                    <h1>{album.title} - {album.artist}</h1>
-                    <img src={album.cover_url} width={200} height={200}/>
-                    {note === null ?
-                        <p>There are no notes for this album.</p>
-                        :
-                        <>
-                         { note === undefined ?
+        {isLoading ? (
+            <Spinner animation="border" />
+        ) : (
+            <>
+                {album === undefined ? 
+                    <Spinner animation="border" />
+                    :
+                    <>
+                        <h1>{album.title} - {album.artist}</h1>
+                        <img src={album.cover_url} width={200} height={200}/>
+                        {note === null ?
+                            <p>There are no notes for this album.</p>
+                            :
+                            <>
+                            { note === undefined ?
+                                <Spinner animation="border" />
+                                :
+                                <>
+                                    <div className="album-note">
+                                        <h3>Album Note</h3>
+                                        <p>{note.content}</p>
+                                        <p>{note.timestamp}</p>
+                                    </div>  
+                                </> 
+                            }
+                        </>
+                        }
+                        <NoteForm user_id={user.id} album_id={album_id} currContent={note ? note.content : ''}/>
+                        {tracks === undefined ?
                             <Spinner animation="border" />
                             :
                             <>
-                                <div className="album-note">
-                                    <h3>Album Note</h3>
-                                    <p>{note.content}</p>
-                                    <p>{note.timestamp}</p>
-                                </div>  
-                            </> 
+                                {tracks === null ?
+                                    <p>Could not retrieve tracks.</p>
+                                    :
+                                    <>
+                                        <ul className="track-list">
+                                            {tracks.map(track => <Track key={track.id} album={album} track={track}/>)}
+                                        </ul>
+                                    </>
+                                }
+                            </>
                         }
-                      </>
-                    }
-                    <NoteForm user_id={user_id} album_id={album_id} currContent={note ? note.content : ''}/>
-                    {tracks === undefined ?
-                        <Spinner animation="border" />
-                        :
-                        <>
-                            {tracks === null ?
-                                <p>Could not retrieve tracks.</p>
-                                :
-                                <>
-                                    <ul className="track-list">
-                                        {tracks.map(track => <Track key={track.id} album={album} track={track}/>)}
-                                    </ul>
-                                </>
-                            }
-                        </>
-                    }
 
-                </>
-            }
-
+                    </>
+                }
+            </>
+        )}
+        
         </>
     );
 }

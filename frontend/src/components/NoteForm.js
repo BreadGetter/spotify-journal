@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";    
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Route } from "react-router-dom";
 
 
 export default function NoteForm( { user_id, album_id, currContent, track_id} ) {

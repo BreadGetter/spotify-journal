@@ -31,7 +31,7 @@ export default function Callback() {
           if (mainResponse.ok) {
             const mainResults = await mainResponse.json();
             setUserData(mainResults);  
-            window.location.href = `/${mainResults.id}`;
+            window.location.href = `/home`;
             
           }
           else {
