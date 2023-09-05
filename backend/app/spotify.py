@@ -1,5 +1,5 @@
 import tekore as tk
-from flask import session, redirect, request, jsonify
+from flask import session, redirect, request, jsonify, json
 from app import app, db
 from app.models import User, Album, Track, Note
 from datetime import datetime
@@ -20,17 +20,22 @@ login_msg = f'You can {in_link} or {out_link}'
 
 
 # in this route, the current users data should be set, and all their albums should be added to database
-@app.route('/', methods=['GET'])
+@app.route('/main', methods=['GET'])
 def main():
+    print("attempting to populate database")
     user_id = session.get('user', None)
     token = users.get(user_id, None)
 
     # Return early if no login or old session
     if user_id is None or token is None:
         session.pop('user', None)
-        return f'User ID: None<br>{login_msg}'
+        return jsonify({
+            'user_data': None, 
+            'albums': None,
+            'message:'  : 'No user logged in.'
+        }), 404
     
-    page = ""; 
+
     if token.is_expiring:
         token = cred.refresh(token)
         users[user_id] = token
@@ -97,8 +102,15 @@ def main():
     except tk.HTTPError as ex:
         page += '<br>Error in retrieving now playing!'
     
+    print("User data and albums added to database.")
+    return jsonify({
+        
+        'id': user.id,
+        'spotify_id': user.spotify_id,
+        'display_name': user.display_name,
+        'image_url': user.image_url
     
-    return page
+    })
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -111,26 +123,37 @@ def login():
     scope = tk.scope.every
     auth = tk.UserAuth(cred, scope)
     auths[auth.state] = auth
+    if auths is not None: print("added auth to auths")
     #return redirect(auth.url, 307)
     return jsonify({'loginUrl': auth.url})
 
-@app.route('/callback', methods=['GET'])
+@app.route('/callback', methods=['POST'])
 def login_callback():
-    code = request.args.get('code', None)
-    state = request.args.get('state', None)
-    auth = auths.pop(state, None)
+    try: 
+        data = request.get_json()
+        callback_url = data['callbackUrl']
+                
+        code = tk.parse_code_from_url(callback_url)
+        state = tk.parse_state_from_url(callback_url)
+        auth = auths.pop(state, None)
+        
+        
 
-    if auth is None:
-        return 'Invalid state!', 400
-
-    token = auth.request_token(code, state)
-    session['user'] = state
-    users[state] = token
-    return redirect('/', 307)
+        print(state)
+        token = auth.request_token(code, state)
+        session['user'] = state
+        users[state] = token
+        print("first callback worked")
+        return jsonify({'message': 'Login successful'})
+    except Exception as e: 
+        print(e)
+        return jsonify({'error': str(e)}), 400
 
 @app.route('/logout', methods=['GET'])
 def logout():
+    print("attempting logout")
     uid = session.pop('user', None)
     if uid is not None:
         users.pop(uid, None)
-    return redirect('/', 307)
+    print("User logged out")
+    return jsonify({'message': 'Logout successful'})

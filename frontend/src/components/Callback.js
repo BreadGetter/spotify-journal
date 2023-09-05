@@ -1,31 +1,62 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 
-function Callback() {
+export default function Callback() {
+  const [loading, setLoading] = useState(true); 
+  const [userData, setUserData] = useState(null);
+
   useEffect(() => {
-    const handleCallback = async () => {
+    (async () => {
       try {
-        const response = await fetch('/callback');
+        console.log(window.location.href)
+        const response = await fetch('/callback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ callbackUrl: window.location.href }),
+
+        });
+        console.log(response);
+        
 
         if (response.status === 200) {
+          const results = await response.json();
           // Handle the success callback (e.g., redirect to a dashboard)
           console.log('Login successful');
+          
+          
+          const mainResponse = await fetch('/main'); 
+          if (mainResponse.ok) {
+            const mainResults = await mainResponse.json();
+            setUserData(mainResults);  
+            window.location.href = `/${mainResults.id}`;
+            
+          }
+          else {
+            console.error('Main request failed');
+          }
+          
+
+
         } else {
           console.error('Callback request failed');
         }
-      } catch (error) {
-        console.error('Error during callback:', error);
+      } catch (err) {
+        console.error('Callback request failed', err);
       }
-    };
-
-    handleCallback();
+      finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
-  return (
-    <div>
-      <p>Processing login...</p>
-    </div>
-  );
-}
+   
 
-export default Callback;
+  return (
+    <>
+      <Spinner animation="border" />
+    </>
+  )
+}

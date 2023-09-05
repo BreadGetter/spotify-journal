@@ -6,6 +6,7 @@ import Albums from './components/Albums';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import AlbumPage from './pages/AlbumPage';
+import Callback from './components/Callback';
 
 
 
@@ -18,9 +19,9 @@ export default function App() {
           <Routes>
             <Route path="/:user_id" element={<HomePage />} />
             <Route path="/:user_id/albums/:album_id" element={<AlbumPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/callback" element={<Callback />} />
             <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/callback" element={<Callback />} />
+
           </Routes>
       </BrowserRouter>
     </Container> 

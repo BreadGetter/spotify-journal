@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 export default function Album({ album }) {
 
-    console.log(album)
-
     return (
         <li key={album.id} className='album-item'>
             <h4>{album.title}</h4>

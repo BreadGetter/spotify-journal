@@ -1,25 +1,26 @@
+import { useEffect, useState } from "react";
 
 export default function Login() {
-    const handleLogin = async () => {
-      try {
-        const response = await fetch('/login');
-  
-        if (response.status === 200) {
-          // Redirect the user to the Spotify login page
-          const results = await response.json();
-          window.location.href = results.loginUrl;
-          console.log(response.data.loginUrl);
-        } else {
-          console.error('Login request failed');
-        }
-      } catch (error) {
-        console.error('Error during login:', error);
+  const [loginUrl, setLoginUrl] = useState(null); 
+
+  const handleLogin = async () => {
+    if (loginUrl === null) {
+      const response = await fetch('/login');
+      if (response.ok) {
+        const results = await response.json();
+        setLoginUrl(results.loginUrl);
+        window.location.href = results.loginUrl;
+      } else {
+        console.error('Login URL request failed');
       }
-    };
+    } else {
+      window.location.href = loginUrl;
+    }
+  };
   
-    return (
-      <div>
-        <button onClick={handleLogin}>Login with Spotify</button>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <button onClick={handleLogin}>Login with Spotify</button>
+    </div>
+  );
+}
