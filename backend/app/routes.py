@@ -10,7 +10,7 @@ def test():
     return {'message': 'Hello from Flask!'}
 
 
-#write a route that sends all of a users album data to client 
+#route that sends all of a users album data to client 
 @app.route('/api/albums/<int:user_id>', methods=['GET'])
 def get_albums(user_id):
     albums = Album.query.filter_by(user_id=user_id).all()
@@ -191,6 +191,24 @@ def get_all_track_notes(user_id):
         note_list.append(note_data)
        
     return jsonify(note_list)
+
+# route where track can be bookmarked (i.e. added to list of bookmarked tracks)
+@app.route('/api/<int:user_id>/tracks/<int:track_id>/bookmark', methods=['POST'])
+def bookmark_track(user_id, track_id):
+    track = Track.query.filter_by(id=track_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    
+    # if track is already bookmarked, remove bookmark
+    if track in user.tracks:
+        user.tracks.remove(track)
+        db.session.commit()
+        return jsonify({'message': 'Track removed from bookmarks!'}, 201)
+    
+    # if track is not bookmarked, add bookmark
+    else:
+        user.tracks.append(track)
+        db.session.commit()
+        return jsonify({'message': 'Track added to bookmarks!'}, 201)
 
 
 

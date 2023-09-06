@@ -1,5 +1,8 @@
+import StarRating from "./StarRating";
+import Bookmark from "./Bookmark";
 import NoteForm from "./NoteForm";
 import { Link } from "react-router-dom";
+
 
 export default function Track({ album, track }) {
 
@@ -12,7 +15,9 @@ export default function Track({ album, track }) {
                 <h3>{track.title}</h3>
                 <p> {album.title}</p>
                 <p> {track.duration}</p>
-                <NoteForm user_id={album.user_id} album_id={album.id} track_id={track.id} currContent={track.note ? track.note.content : ''}/>
+                <StarRating track_id={track.id} />
+                <Bookmark track_id={track.id} />
+                <NoteForm user_id={album.user_id} album_id={album.id} track_id={track.id} />
                 <Link to={`/albums/${album.id}/tracks/${track.id}/notes`}> View previous track notes </Link>
             </div>
         </div>

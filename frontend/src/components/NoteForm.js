@@ -4,14 +4,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 
-export default function NoteForm( { user_id, album_id, currContent, track_id} ) {
+export default function NoteForm( { user_id, album_id, track_id} ) {
     const content = useRef();
 
-    useEffect(() => {
-        if (currContent !== undefined) {
-            content.current.value = currContent;
-        }
-    }, [currContent]);
 
 
     const onSubmit = async (event) => {
@@ -37,22 +32,19 @@ export default function NoteForm( { user_id, album_id, currContent, track_id} ) 
         }
     };    
 
-    console.log(currContent);
-
     return (
         <Form onSubmit={onSubmit}>
             <Form.Group controlId="content">
-                <Form.Label>Content</Form.Label>
+                
                 <Form.Control 
                     as="textarea" 
                     rows={3} 
                     ref={content} 
-                    placeholder={currContent ? currContent : 'add note...'}
-                    defaultValue={currContent}
+                    placeholder={'whats on your mind...'}
                 />
             </Form.Group>
             <Button variant="primary" type="submit">
-                {currContent ? 'Update Note' : 'Add Note'}
+                Add new note
             </Button>
         </Form>
     );

@@ -100,7 +100,8 @@ def main():
             db.session.commit()
 
     except tk.HTTPError as ex:
-        page += '<br>Error in retrieving now playing!'
+        print(ex)
+        return jsonify({'message': 'Error: {ex}'})
     
     print("User data and albums added to database.")
     return jsonify({

@@ -15,8 +15,9 @@ export default function Header() {
                 { user === null ? <Login /> : (
                     <>      
                         <Link to="/home">Home</Link>
+                        <Link to="/albums/notes">All Album Notes</Link>
+                        <Link to="/tracks/notes">All Track Notes</Link>
                         <Logout />
-
                         <h5 className="username"> Hi, { user?.display_name}!</h5>
                         <img src={user?.image_url} width={50} height={50}/>
                     </>

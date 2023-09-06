@@ -9,6 +9,7 @@ import Callback from './components/Callback';
 import UserProvider from './contexts/UserProvider';
 import AlbumNotesPage from './pages/AlbumNotesPage';  
 import TrackNotesPage from './pages/TrackNotesPage';
+import TracksPage from './pages/TracksPage';
 
 
 
@@ -23,6 +24,7 @@ export default function App() {
               <Route path="/home" element={<HomePage />} />
               <Route path="/albums/:album_id" element={<AlbumPage />} />
               <Route path="/albums/notes" element={<AlbumsPage />} />
+              <Route path="/tracks/notes" element={<TracksPage />} />
               <Route path="/albums/:album_id/notes" element={<AlbumNotesPage />} />
               <Route path="/albums/:album_id/tracks/:track_id/notes" element={<TrackNotesPage />} />
               <Route path="*" element={<Navigate to="/" />} />
