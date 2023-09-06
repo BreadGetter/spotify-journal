@@ -23,6 +23,7 @@ class Album(db.Model):
     total_tracks = db.Column(db.Integer, nullable=False)
     tracks = db.relationship('Track', backref='album', lazy=True)
     note = db.relationship('Note', backref='album', uselist=False)
+    rating = db.Column(db.Integer, nullable=False, default=0)
     
     def __repr__(self):
         return f'<Album {self.title}>'
@@ -34,6 +35,9 @@ class Track(db.Model):
     title = db.Column(db.String(120), nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     note = db.relationship('Note', backref='track', uselist=False)
+    rating = db.Column(db.Integer, nullable=False, default=0)
+    track_no = db.Column(db.Integer, nullable=False)
+    is_bookmarked = db.Column(db.Boolean, nullable=False, default=False)
     
     def __repr__(self):
         return f'<Track {self.title}>'
@@ -48,6 +52,8 @@ class Note(db.Model):
     
     def __repr__(self):
         return f'<Note {self.id}>'
+    
+
     
     
 

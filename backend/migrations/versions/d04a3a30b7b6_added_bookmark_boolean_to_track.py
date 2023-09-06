@@ -1,8 +1,8 @@
-"""first models
+"""added bookmark boolean to track
 
-Revision ID: 17e52f8f49dd
+Revision ID: d04a3a30b7b6
 Revises: 
-Create Date: 2023-09-01 22:32:59.549472
+Create Date: 2023-09-06 05:30:27.420220
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '17e52f8f49dd'
+revision = 'd04a3a30b7b6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,6 +33,7 @@ def upgrade():
     sa.Column('artist', sa.String(length=120), nullable=False),
     sa.Column('release_date', sa.Date(), nullable=False),
     sa.Column('total_tracks', sa.Integer(), nullable=False),
+    sa.Column('rating', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -42,6 +43,9 @@ def upgrade():
     sa.Column('album_id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=120), nullable=False),
     sa.Column('duration', sa.Integer(), nullable=False),
+    sa.Column('rating', sa.Integer(), nullable=False),
+    sa.Column('track_no', sa.Integer(), nullable=False),
+    sa.Column('is_bookmarked', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['album_id'], ['album.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')

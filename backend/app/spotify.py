@@ -90,7 +90,8 @@ def main():
                         user_id=user.id,
                         album_id=album_data.id,
                         title=track.name,
-                        duration=track.duration_ms
+                        duration=track.duration_ms,
+                        track_no=track.track_number
                     )                    
                 
                     db.session.add(track_data)

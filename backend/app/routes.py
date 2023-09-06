@@ -42,6 +42,7 @@ def get_album(user_id, album_id):
         'user_id': album.user_id,
         'title': album.title,
         'artist': album.artist,
+        'rating': album.rating,
         'release_date': album.release_date.strftime('%Y-%m-%d'),
         'total_tracks': album.total_tracks,
         'tracks': [],
@@ -56,6 +57,8 @@ def get_album(user_id, album_id):
             'id': track.id,
             'title': track.title,
             'duration': track.duration, 
+            'rating': track.rating,
+            'track_no': track.track_no,
             'note': None if track.note is None else {
                  'content': track.note.content if track.note else None,
                  'timestamp': track.note.timestamp.strftime('%Y-%m-%d %H:%M:%S') if track.note else None
@@ -192,23 +195,31 @@ def get_all_track_notes(user_id):
        
     return jsonify(note_list)
 
-# route where track can be bookmarked (i.e. added to list of bookmarked tracks)
-@app.route('/api/<int:user_id>/tracks/<int:track_id>/bookmark', methods=['POST'])
-def bookmark_track(user_id, track_id):
-    track = Track.query.filter_by(id=track_id).first()
-    user = User.query.filter_by(id=user_id).first()
-    
-    # if track is already bookmarked, remove bookmark
-    if track in user.tracks:
-        user.tracks.remove(track)
+# route where rating of album or track can be updated
+@app.route('/api/albums/<int:user_id>/<int:item_id>/rating', methods=['POST'])
+def update_rating(user_id, item_id):
+    data = request.get_json()
+    user_id = data['user_id']
+    rating = data['rating']
+    is_album = data['is_album']
+
+
+    if is_album:
+        album = Album.query.filter_by(user_id=user_id, id=item_id).first()
+        album.rating = rating
         db.session.commit()
-        return jsonify({'message': 'Track removed from bookmarks!'}, 201)
-    
-    # if track is not bookmarked, add bookmark
+        print(rating)
+        return jsonify({'message': 'Album rating updated successfully!', 'rating' : album.rating}, 201)
     else:
-        user.tracks.append(track)
+        track = Track.query.filter_by(user_id=user_id, id=item_id).first()
+        track.rating = rating
         db.session.commit()
-        return jsonify({'message': 'Track added to bookmarks!'}, 201)
+        print(rating)
+        return jsonify({'message': 'Track rating updated successfully!', 'rating' : track.rating}, 201)
+    
+
+
+
 
 
 

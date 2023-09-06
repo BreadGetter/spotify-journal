@@ -6,6 +6,7 @@ import Track from "./Track";
 import NoteForm from "./NoteForm";
 import { useUser } from '../contexts/UserProvider';
 import { Link } from "react-router-dom";
+import StarRating from "./StarRating";
 
 
 
@@ -42,7 +43,7 @@ export default function SingleAlbum({ album_id }) {
         }
 
     })();
-    }, [user, album, tracks, note]);
+    }, [user]);
 
       
     
@@ -58,6 +59,7 @@ export default function SingleAlbum({ album_id }) {
                     <>
                         <h1>{album.title} - {album.artist} - {album.release_date}</h1>
                         <img src={album.cover_url} width={200} height={200}/>
+                        <StarRating isAlbum={true} album_id={album_id} user_id={user.id} defaultValue={album.rating}/>
                         {note === null ?
                             <p>There are no notes for this album.</p>
                             :
