@@ -59,6 +59,7 @@ def get_album(user_id, album_id):
             'duration': track.duration, 
             'rating': track.rating,
             'track_no': track.track_no,
+            'is_bookmarked': track.is_bookmarked,
             'note': None if track.note is None else {
                  'content': track.note.content if track.note else None,
                  'timestamp': track.note.timestamp.strftime('%Y-%m-%d %H:%M:%S') if track.note else None
@@ -216,6 +217,46 @@ def update_rating(user_id, item_id):
         db.session.commit()
         print(rating)
         return jsonify({'message': 'Track rating updated successfully!', 'rating' : track.rating}, 201)
+    
+# route where bookmark of track can be updated
+@app.route('/api/<int:user_id>/<int:track_id>/bookmark', methods=['POST'])
+def update_bookmark(user_id, track_id):
+    data = request.get_json()
+    user_id = data['user_id']
+
+    track = Track.query.filter_by(user_id=user_id, id=track_id).first()
+    # reverse bookmark status 
+    track.is_bookmarked = not track.is_bookmarked
+    db.session.commit()
+    if (track.is_bookmarked):
+        print("added bookmark")
+    else:
+        print("removed bookmark")
+    return jsonify({'message': 'Track bookmark updated successfully!', 'is_bookmarked' : track.is_bookmarked}, 201)
+
+# get bookmarked tracks
+@app.route('/api/<int:user_id>/tracks/bookmarks', methods=['GET'])
+def get_bookmarks(user_id):
+    tracks = Track.query.filter_by(user_id=user_id, is_bookmarked=True).all()
+    track_list = []
+    
+    for track in tracks:
+        album = Album.query.filter_by(id=track.album_id).first()
+        track_data = {
+            'id': track.id,
+            'user_id': track.user_id,
+            'artist': album.artist,
+            'album_id': album.id,
+            'track_name': track.title,
+            'album_name': album.title,
+            'rating': track.rating,
+            'track_no': track.track_no,
+            'is_bookmarked': track.is_bookmarked,
+            'cover_url': album.cover_url
+        }
+        track_list.append(track_data)
+       
+    return jsonify(track_list)
     
 
 

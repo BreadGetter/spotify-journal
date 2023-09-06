@@ -61,3 +61,20 @@ h1 {
   justify-content: space-between;
   align-items: center;
 }
+
+.header-content {
+  display: flex;
+  align-items: center; /* Vertically center align items */
+}
+
+.header-content a,
+.header-content h5,
+.header-content img {
+
+  margin-right: 15px; /* Add spacing between elements */
+}
+
+.username {
+  margin-left: 10px;
+  margin-right: 10px; /* Adjust spacing for the username */
+}

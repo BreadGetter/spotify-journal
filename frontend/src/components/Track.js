@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export default function Track({ album, track }) {
 
     console.log(album.cover_url);
-    console.log(track.rating);
+    console.log(track);
 
     return (
         <div className="Track">
@@ -18,9 +18,10 @@ export default function Track({ album, track }) {
                 <p> {album.title}</p>
                 <p> {track.duration}</p>
                 <StarRating isAlbum={false} album_id={album.id} track_id={track.id} user_id={album.user_id} defaultValue={track.rating}/>
-                <Bookmark track_id={track.id} />
                 <NoteForm user_id={album.user_id} album_id={album.id} track_id={track.id} />
                 <Link to={`/albums/${album.id}/tracks/${track.id}/notes`}> View previous track notes </Link>
+                <Bookmark track_id={track.id} isBookmarked={track.is_bookmarked} />
+
             </div>
         </div>
     );

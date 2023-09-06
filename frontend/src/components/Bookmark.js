@@ -1,22 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '../contexts/UserProvider';
+import fontawesome from '@fortawesome/fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark, faBookmarkOpen } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons';
 
 
-export default function Bookmark({ track_id }) {
 
-    // this component renders a bookmark icon which when clicked, either adds or deletes a bookmark 
-    // route: '/api/<int:user_id>/tracks/<int:track_id>/bookmark'
-
-    // on click of bookmark button, send post request 
+export default function Bookmark({ track_id, is_bookmarked }) {
 
     const { user } = useUser();
+    const [isBookmarked, setIsBookmarked] = useState(is_bookmarked);
 
-    const [isBookmarked, setIsBookmarked] = useState(false);
 
     const toggleBookmark = () => {
-        fetch (`/api/${user.id}/tracks/${track_id}/bookmark`, {
+        fetch (`/api/${user.id}/${track_id}/bookmark`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,10 +31,17 @@ export default function Bookmark({ track_id }) {
         });
     }
 
+    // if is bookmarked, render button thats a filled out bookmark icon
+    // if not bookmarked, render button thats an empty bookmark icon
 
 
+    return (
+        <div>
 
+                <FontAwesomeIcon icon={isBookmarked ? solidBookmark : regularBookmark} onClick={toggleBookmark} />
 
-
+            
+        </div>   
+    );
 
 }
