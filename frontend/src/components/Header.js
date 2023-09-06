@@ -12,17 +12,19 @@ export default function Header() {
         <Navbar bg="light" sticky="top" className="Header">
             <Container>
                 <Navbar.Brand>Spotify journal</Navbar.Brand>
-                { user === null ? <Login /> : (
-                    <>      
+                {user === null ? (
+                    <Login />
+                ) : (
+                    <div className="header-content">
                         <Link to="/home">Home</Link>
                         <Link to="/albums/notes">All Album Notes</Link>
                         <Link to="/tracks/notes">All Track Notes</Link>
                         <Logout />
-                        <h5 className="username"> Hi, { user?.display_name}!</h5>
-                        <img src={user?.image_url} width={50} height={50}/>
-                    </>
+                        <h5 className="username"> Hi, {user?.display_name}!</h5>
+                        <img src={user?.image_url} width={50} height={50} />
+                    </div>
                 )}
             </Container>
         </Navbar>
-    ); 
+    );
 }
