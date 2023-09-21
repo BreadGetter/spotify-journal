@@ -10,7 +10,7 @@ export default function Callback() {
     (async () => {
       try {
         console.log(window.location.href)
-        const response = await fetch('/callback', {
+        const response = await fetch('/api/callback', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export default function Callback() {
           console.log('Login successful');
           
           
-          const mainResponse = await fetch('/main'); 
+          const mainResponse = await fetch('/api/main'); 
           if (mainResponse.ok) {
             const mainResults = await mainResponse.json();
             setUserData(mainResults);  

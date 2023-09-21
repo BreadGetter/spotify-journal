@@ -10,7 +10,7 @@ export default function UserProvider({ children }) {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/main'); // Replace with your main endpoint
+        const response = await fetch('/api/main'); // Replace with your main endpoint
         if (response.ok) {
           const userDataFromServer = await response.json();
           setUser(userDataFromServer);

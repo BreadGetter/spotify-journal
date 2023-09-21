@@ -20,7 +20,7 @@ login_msg = f'You can {in_link} or {out_link}'
 
 
 # in this route, the current users data should be set, and all their albums should be added to database
-@app.route('/main', methods=['GET'])
+@app.route('/api/main', methods=['GET'])
 def main():
     print("attempting to populate database")
     user_id = session.get('user', None)
@@ -114,7 +114,7 @@ def main():
     
     })
 
-@app.route('/login', methods=['GET'])
+@app.route('/api/login', methods=['GET'])
 def login():
     print("attempted login")
     if 'user' in session:
@@ -129,7 +129,7 @@ def login():
     #return redirect(auth.url, 307)
     return jsonify({'loginUrl': auth.url})
 
-@app.route('/callback', methods=['POST'])
+@app.route('/api/callback', methods=['POST'])
 def login_callback():
     try: 
         data = request.get_json()
@@ -151,7 +151,7 @@ def login_callback():
         print(e)
         return jsonify({'error': str(e)}), 400
 
-@app.route('/logout', methods=['GET'])
+@app.route('/api/logout', methods=['GET'])
 def logout():
     print("attempting logout")
     uid = session.pop('user', None)

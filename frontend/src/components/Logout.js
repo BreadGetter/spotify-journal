@@ -5,7 +5,7 @@ export default function Logout() {
 
 
     const handleLogout = async () => {
-        const response = await fetch('/logout');
+        const response = await fetch('/api/logout');
         if (response.ok) {
             const results = await response.json();
             console.log("Logout successful");

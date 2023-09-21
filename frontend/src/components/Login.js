@@ -5,7 +5,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (loginUrl === null) {
-      const response = await fetch('/login');
+      const response = await fetch('/api/login');
       if (response.ok) {
         const results = await response.json();
         setLoginUrl(results.loginUrl);

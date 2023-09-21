@@ -8,8 +8,6 @@ RUN yarn install
 
 COPY . . 
 
-RUN apk add --no-cache tmux 
-
 EXPOSE 3000
 
-CMD ["tmux", "new-session", "-d", "-s", "my-app-session", "yarn start"; "tmux split-window -v 'yarn start-api'; tmux -2 attach-session -t my-app-session"]
+CMD ["yarn", "start"]

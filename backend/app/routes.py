@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import desc
 
 # route to test if connection to frontend is working, no auth required
-@app.route('/test', methods=['GET'])
+@app.route('/', methods=['GET'])
 def test():
     return {'message': 'Hello from Flask!'}
 
